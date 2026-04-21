@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Family Tree - Perayil Kudumbam</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Cinzel:wght@400;500;600&family=Crimson+Pro:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream: #f5efe3;
+      --warm-white: #faf7f2;
+      --sand: #e8d9bc;
+      --gold: #b8913a;
+      --gold-light: #d4a855;
+      --deep-brown: #2c1810;
+      --text-dark: #1e1008;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background-color: var(--deep-brown); /* Dark background for tree */
+      color: var(--cream);
+      font-family: 'Crimson Pro', Georgia, serif;
+      overflow-x: hidden;
+    }
+
+    /* ── HEADER / NAV ── */
+    header {
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: var(--gold-light);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+    }
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: 'Cinzel', serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(245,239,227,0.65);
+      text-decoration: none;
+      transition: color 0.25s;
+    }
+    .nav-links a.active, .nav-links a:hover { color: var(--gold-light); }
+
+    .header-eyebrow {
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.35em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    .header-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 300;
+      color: var(--cream);
+      line-height: 1.1;
+    }
+
+    /* ── TREE STRUCTURE ── */
+    .tree-container {
+      width: 100%;
+      overflow-x: auto;
+      padding: 4rem 2rem 8rem;
+      cursor: grab;
+      display: flex;
+      justify-content: center; /* keep centered if screen is wide enough */
+    }
+    .tree-container:active { cursor: grabbing; }
+
+    .tree {
+      display: inline-block; /* allows it to grow wider than screen */
+      padding: 20px;
+    }
+
+    .tree ul {
+      padding-top: 12px; 
+      position: relative;
+      display: flex;
+      justify-content: center;
+      transition: all 0.5s;
+    }
+
+    .tree li {
+      float: left;
+      text-align: center;
+      list-style-type: none;
+      position: relative;
+      padding: 12px 2px 0 2px;
+      transition: all 0.5s;
+    }
+
+    /* Connecting lines */
+    .tree li::before, .tree li::after{
+      content: '';
+      position: absolute; top: 0; right: 50%;
+      border-top: 2px solid rgba(184,145,58,0.5); /* Gold lines */
+      width: 50%; height: 12px;
+    }
+    .tree li::after{
+      right: auto; left: 50%;
+      border-left: 2px solid rgba(184,145,58,0.5);
+    }
+
+    /* Cleanup edges */
+    .tree li:only-child::after, .tree li:only-child::before {
+      display: none;
+    }
+    .tree li:only-child {
+      padding-top: 0;
+    }
+    .tree li:first-child::before, .tree li:last-child::after {
+      border: 0 none;
+    }
+
+    /* Node dropping line */
+    .tree li:last-child::before{
+      border-right: 2px solid rgba(184,145,58,0.5);
+      border-radius: 0 5px 0 0;
+    }
+    .tree li:first-child::after{
+      border-radius: 5px 0 0 0;
+    }
+    .tree ul ul::before{
+      content: '';
+      position: absolute; top: 0; left: 50%;
+      border-left: 2px solid rgba(184,145,58,0.5);
+      width: 0; height: 12px;
+      transform: translateX(-1px);
+    }
+
+    /* The Nodes */
+    .tree li a {
+      background: rgba(245, 239, 227, 0.05);
+      border: 1px solid rgba(184,145,58,0.4);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+      padding: 0.6rem 0.8rem;
+      text-decoration: none;
+      color: var(--cream);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.85rem;
+      line-height: 1.1;
+      display: inline-block;
+      border-radius: 20px; /* Pillow oval shape */
+      transition: all 0.3s ease;
+      min-width: 90px;
+    }
+
+    .tree li a:hover {
+      background: var(--gold);
+      color: var(--deep-brown);
+      border-color: var(--gold-light);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(184,145,58,0.2);
+    }
+    
+    /* Root styling */
+    .root-node > a {
+      background: var(--gold);
+      color: var(--deep-brown);
+      font-weight: 600;
+      font-size: 1.1rem;
+      padding: 0.8rem 1.5rem;
+    }
+
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="nav-inner">
+      <a href="perayil.html" class="nav-logo">Perayil Kudumbam</a>
+      <ul class="nav-links">
+        <li><a href="perayil.html#home">Home</a></li>
+        <li><a href="perayil.html#history">History</a></li>
+        <li><a href="FamilyTree.html" class="active">Family Tree</a></li>
+        <li><a href="perayil.html#memories">Photo Album</a></li>
+        <li><a href="FamilyDirectory.html">Directory</a></li>
+        <li><a href="perayil.html#champakulam">Champakulam</a></li>
+      </ul>
+    </div>
+    <p class="header-eyebrow">Lineage & Roots</p>
+    <h1 class="header-title">The Family Tree</h1>
+  </header>
+
+  <section class="tree-container" id="draggable">
+    <div class="tree">
+      <ul>
+        <!-- Root: Isahak -->
+        <li class="root-node">
+          <a href="#">Isahak</a>
+          <ul>
+            <!-- Chandy + Chinnamma -->
+            <li>
+              <a href="#">Chandy + Chinnamma</a>
+              <ul>
+                <!-- Children of Chandy + Chinnamma -->
+                <li><a href="#">Mankamma +<br>Thommachan</a></li>
+                <li><a href="#">Vavachan +<br>Thankamma</a></li>
+                
+                <li>
+                  <a href="#">Marykutty +<br>Chackochan</a>
+                </li>
+                
+                <li>
+                  <a href="#">Kuttichan +<br>Marykutty</a>
+                  <ul>
+                    <li><a href="#">Lalichan + Lisamma</a></li>
+                    <li><a href="#">Santhosh + Sherly</a></li>
+                    <li><a href="#">Lalimma + Sibichan</a></li>
+                    <li><a href="#">Jis + Anup</a></li>
+                    <li><a href="#">Jibin</a></li>
+                    <li><a href="#">Kunjachan</a></li>
+                  </ul>
+                </li>
+                
+                <li><a href="#">Kunjachan +<br>Mamikkutty</a></li>
+                <li><a href="#">Theramma +<br>Ommachan</a></li>
+                <li><a href="#">Kuttappan +<br>Animma</a></li>
+                
+                <li>
+                  <a href="#">Babichan +<br>Valsamma</a>
+                  <ul>
+                    <li><a href="#">Bibin</a></li>
+                    <li><a href="#">Babitha</a></li>
+                  </ul>
+                </li>
+                
+                <li><a href="#">Lillikutty +<br>Mathachan</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Script for mouse drag to scroll the wide tree -->
+  <script>
+    const slider = document.getElementById('draggable');
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+
+    slider.addEventListener('mousedown', (e) => {
+      isDown = true;
+      startX = e.pageX - slider.offsetLeft;
+      scrollLeft = slider.scrollLeft;
+    });
+    slider.addEventListener('mouseleave', () => { isDown = false; });
+    slider.addEventListener('mouseup', () => { isDown = false; });
+    slider.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - slider.offsetLeft;
+      const walk = (x - startX) * 2; 
+      slider.scrollLeft = scrollLeft - walk;
+    });
+  </script>
+
+</body>
+</html>

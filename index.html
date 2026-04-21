@@ -1,0 +1,1398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perayil Kudumbam</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Cinzel:wght@400;500;600&family=Crimson+Pro:ital,wght@0,300;0,400;1,300&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream: #f5efe3;
+      --warm-white: #faf7f2;
+      --sand: #e8d9bc;
+      --gold: #b8913a;
+      --gold-light: #d4a855;
+      --gold-dark: #8a6a25;
+      --terracotta: #9b4e2e;
+      --deep-brown: #2c1810;
+      --mid-brown: #5c3317;
+      --text-dark: #1e1008;
+      --text-mid: #4a2e1a;
+      --text-light: #7a5c3a;
+      --leaf: #3d5a3e;
+      --water: #2d5f7a;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--warm-white);
+      color: var(--text-dark);
+      font-family: 'Crimson Pro', Georgia, serif;
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE TEXTURE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.018;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 180px;
+    }
+
+    /* ── HEADER ── */
+    header {
+      position: relative;
+      background: var(--deep-brown);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 40%, rgba(184,145,58,0.12) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 80% at 20% 80%, rgba(155,78,46,0.15) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 50% at 80% 20%, rgba(45,95,122,0.1) 0%, transparent 60%);
+    }
+
+    /* Decorative border frame */
+    .header-frame {
+      position: absolute;
+      inset: 24px;
+      border: 1px solid rgba(184,145,58,0.3);
+      pointer-events: none;
+    }
+    .header-frame::before {
+      content: '';
+      position: absolute;
+      inset: 8px;
+      border: 1px solid rgba(184,145,58,0.12);
+    }
+
+    /* Corner ornaments */
+    .corner {
+      position: absolute;
+      width: 48px;
+      height: 48px;
+    }
+    .corner svg { width: 100%; height: 100%; }
+    .corner--tl { top: -1px; left: -1px; }
+    .corner--tr { top: -1px; right: -1px; transform: scaleX(-1); }
+    .corner--bl { bottom: -1px; left: -1px; transform: scaleY(-1); }
+    .corner--br { bottom: -1px; right: -1px; transform: scale(-1,-1); }
+
+    .header-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 2rem;
+      animation: fadeUp 1.4s ease both;
+    }
+
+    .header-eyebrow {
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.35em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 1.4rem;
+      opacity: 0.85;
+    }
+
+    .header-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.5rem, 9vw, 7.5rem);
+      font-weight: 300;
+      color: var(--cream);
+      line-height: 1.0;
+      letter-spacing: 0.02em;
+    }
+
+    .header-title em {
+      font-style: italic;
+      color: var(--gold-light);
+    }
+
+    .header-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.2rem;
+      margin: 1.8rem auto;
+    }
+    .header-divider span {
+      display: block;
+      height: 1px;
+      width: 80px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+    .header-divider svg { fill: var(--gold); width: 16px; height: 16px; }
+
+    .header-subtitle {
+      font-family: 'Crimson Pro', serif;
+      font-size: clamp(1rem, 2vw, 1.3rem);
+      color: rgba(245,239,227,0.65);
+      font-style: italic;
+      letter-spacing: 0.05em;
+      font-weight: 300;
+    }
+
+    .header-cta {
+      display: flex;
+      gap: 1rem;
+      margin-top: 3rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 0.85rem 2.2rem;
+      border: 1px solid;
+      transition: all 0.35s ease;
+      cursor: pointer;
+    }
+    .btn-primary {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: var(--deep-brown);
+    }
+    .btn-primary:hover {
+      background: var(--gold-light);
+      border-color: var(--gold-light);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(184,145,58,0.35);
+    }
+    .btn-outline {
+      background: transparent;
+      border-color: rgba(184,145,58,0.5);
+      color: var(--cream);
+    }
+    .btn-outline:hover {
+      border-color: var(--gold);
+      color: var(--gold-light);
+      transform: translateY(-2px);
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      color: rgba(245,239,227,0.35);
+      font-family: 'Cinzel', serif;
+      font-size: 0.55rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      animation: bounce 2.5s ease-in-out infinite;
+    }
+    .scroll-hint svg { width: 18px; height: 18px; fill: currentColor; }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(44, 24, 16, 0.97);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(184,145,58,0.2);
+    }
+
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      height: 64px;
+    }
+
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: var(--gold-light);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 0;
+      list-style: none;
+    }
+
+    .nav-links a {
+      display: block;
+      padding: 0 1.2rem;
+      height: 64px;
+      line-height: 64px;
+      font-family: 'Cinzel', serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(245,239,227,0.65);
+      text-decoration: none;
+      transition: color 0.25s, background 0.25s;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 1.2rem;
+      right: 1.2rem;
+      height: 2px;
+      background: var(--gold);
+      transform: scaleX(0);
+      transition: transform 0.25s;
+    }
+    .nav-links a:hover { color: var(--gold-light); }
+    .nav-links a:hover::after { transform: scaleX(1); }
+
+    /* ── SECTIONS ── */
+    section {
+      padding: 6rem 2rem;
+    }
+
+    .section-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.8rem;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.2rem, 4vw, 3.5rem);
+      font-weight: 300;
+      color: var(--text-dark);
+      line-height: 1.15;
+    }
+
+    .section-divider {
+      width: 48px;
+      height: 1px;
+      background: var(--gold);
+      margin: 1.5rem 0 2.5rem;
+    }
+
+    /* ── ABOUT / WELCOME ── */
+    #about {
+      background: var(--warm-white);
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+
+    .about-text p {
+      font-size: 1.2rem;
+      line-height: 1.85;
+      color: var(--text-mid);
+      margin-bottom: 1.4rem;
+      font-weight: 300;
+    }
+
+    .about-ornament {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ornament-ring {
+      width: 380px;
+      height: 380px;
+      border-radius: 50%;
+      border: 1px solid rgba(184,145,58,0.25);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: rotateRing 40s linear infinite;
+    }
+    .ornament-ring::before {
+      content: '';
+      position: absolute;
+      inset: 16px;
+      border-radius: 50%;
+      border: 1px dashed rgba(184,145,58,0.15);
+    }
+
+    .ornament-center {
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--sand) 0%, var(--cream) 50%, #e9dcc6 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 20px 60px rgba(44,24,16,0.12), inset 0 2px 8px rgba(255,255,255,0.6);
+      animation: rotateRing 40s linear infinite reverse;
+    }
+
+    .ornament-icon {
+      font-size: 4.5rem;
+      line-height: 1;
+    }
+
+    /* ── QUICK LINKS / CARDS ── */
+    #explore {
+      background: var(--cream);
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5px;
+      margin-top: 3.5rem;
+      background: rgba(184,145,58,0.15);
+      border: 1px solid rgba(184,145,58,0.15);
+    }
+
+    .card {
+      background: var(--warm-white);
+      padding: 2.8rem 2.2rem;
+      text-decoration: none;
+      display: block;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--gold);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 48px rgba(44,24,16,0.1);
+      z-index: 1;
+    }
+    .card:hover::before { transform: scaleX(1); }
+
+    .card-icon {
+      font-size: 2.2rem;
+      margin-bottom: 1.2rem;
+      display: block;
+    }
+
+    .card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 500;
+      color: var(--text-dark);
+      margin-bottom: 0.6rem;
+    }
+
+    .card-desc {
+      font-size: 1rem;
+      color: var(--text-light);
+      line-height: 1.65;
+      font-weight: 300;
+    }
+
+    .card-arrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 1.4rem;
+      font-family: 'Cinzel', serif;
+      font-size: 0.58rem;
+      letter-spacing: 0.2em;
+      color: var(--gold);
+      text-transform: uppercase;
+      transition: gap 0.25s;
+    }
+    .card:hover .card-arrow { gap: 0.9rem; }
+
+    /* ── HISTORY SECTION ── */
+    #history {
+      background: var(--deep-brown);
+      position: relative;
+      overflow: hidden;
+    }
+
+    #history::before {
+      content: '';
+      position: absolute;
+      top: -100px;
+      right: -100px;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      border: 80px solid rgba(184,145,58,0.04);
+    }
+    #history::after {
+      content: '';
+      position: absolute;
+      bottom: -80px;
+      left: -80px;
+      width: 350px;
+      height: 350px;
+      border-radius: 50%;
+      border: 60px solid rgba(155,78,46,0.07);
+    }
+
+    #history .section-title { color: var(--cream); }
+    #history .section-label { color: var(--gold-light); }
+
+    .history-content {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 5rem;
+      align-items: start;
+      position: relative;
+      z-index: 1;
+    }
+
+    .history-years {
+      position: sticky;
+      top: 96px;
+    }
+
+    .year-display {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 7rem;
+      font-weight: 300;
+      color: rgba(184,145,58,0.15);
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+
+    .history-quote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-style: italic;
+      color: rgba(245,239,227,0.55);
+      line-height: 1.6;
+      border-left: 2px solid var(--gold);
+      padding-left: 1.2rem;
+    }
+
+    .history-blocks p {
+      font-size: 1.15rem;
+      line-height: 1.9;
+      color: rgba(245,239,227,0.75);
+      margin-bottom: 2rem;
+      font-weight: 300;
+    }
+
+    /* ── CHAMPAKULAM ── */
+    #champakulam {
+      background: var(--warm-white);
+    }
+
+    .champakulam-layout {
+      display: grid;
+      grid-template-columns: 3fr 2fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .champakulam-text p {
+      font-size: 1.15rem;
+      line-height: 1.85;
+      color: var(--text-mid);
+      margin-bottom: 1.4rem;
+      font-weight: 300;
+    }
+
+    .place-card {
+      background: var(--cream);
+      border: 1px solid rgba(184,145,58,0.2);
+      padding: 2rem;
+    }
+
+    .place-card-title {
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.2rem;
+    }
+
+    .place-facts {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .place-facts li {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      font-size: 1rem;
+      color: var(--text-mid);
+    }
+    .place-facts li span:first-child {
+      font-size: 1.1rem;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--deep-brown);
+      padding: 4rem 2rem 2rem;
+      border-top: 1px solid rgba(184,145,58,0.15);
+    }
+
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .footer-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding-bottom: 3rem;
+      border-bottom: 1px solid rgba(184,145,58,0.12);
+      gap: 3rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-brand .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-weight: 300;
+      color: var(--cream);
+    }
+
+    .footer-brand p {
+      font-size: 0.95rem;
+      color: rgba(245,239,227,0.4);
+      margin-top: 0.5rem;
+      font-style: italic;
+    }
+
+    .footer-links h4 {
+      font-family: 'Cinzel', serif;
+      font-size: 0.58rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+    .footer-links ul { list-style: none; }
+    .footer-links li { margin-bottom: 0.5rem; }
+    .footer-links a {
+      font-size: 0.95rem;
+      color: rgba(245,239,227,0.5);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--gold-light); }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 2rem;
+      font-size: 0.8rem;
+      color: rgba(245,239,227,0.25);
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-ornament {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    .footer-ornament span {
+      width: 24px;
+      height: 1px;
+      background: rgba(184,145,58,0.25);
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50%       { transform: translateX(-50%) translateY(8px); }
+    }
+
+    @keyframes rotateRing {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
+    /* Reveal on scroll */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .about-grid, .history-content, .champakulam-layout { grid-template-columns: 1fr; gap: 2.5rem; }
+      .cards-grid { grid-template-columns: 1fr 1fr; }
+      .ornament-ring { width: 260px; height: 260px; }
+      .ornament-center { width: 180px; height: 180px; }
+      .nav-links { display: none; }
+    }
+
+    @media (max-width: 600px) {
+      .cards-grid { grid-template-columns: 1fr; }
+      .footer-top { flex-direction: column; }
+    }
+
+    /* ── CINEMATIC HERO VIDEO ── */
+    .hero-video-wrapper {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      overflow: hidden;
+      background: var(--deep-brown);
+    }
+    .hero-video-wrapper video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.35;
+      mix-blend-mode: luminosity;
+    }
+    .hero-video-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(44,24,16,0.3) 0%, rgba(44,24,16,0.85) 100%);
+    }
+
+    /* ── FLOATING AUDIO PLAYER ── */
+    .audio-btn {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: rgba(44, 24, 16, 0.85);
+      border: 1px solid rgba(184,145,58,0.4);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gold);
+      cursor: pointer;
+      z-index: 999;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    }
+    .audio-btn:hover {
+      background: rgba(44, 24, 16, 1);
+      border-color: var(--gold-light);
+      transform: scale(1.1);
+    }
+    .audio-waves {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      height: 16px;
+    }
+    .audio-waves span {
+      display: block;
+      width: 2px;
+      background: currentColor;
+      border-radius: 2px;
+      animation: soundWave 1.2s ease-in-out infinite alternate;
+    }
+    .audio-waves span:nth-child(1) { height: 4px; animation-delay: 0.1s; }
+    .audio-waves span:nth-child(2) { height: 16px; animation-delay: 0.3s; }
+    .audio-waves span:nth-child(3) { height: 8px; animation-delay: 0.5s; }
+    .audio-waves span:nth-child(4) { height: 12px; animation-delay: 0.2s; }
+    .audio-btn.paused .audio-waves span { animation-play-state: paused; height: 2px; }
+
+    @keyframes soundWave {
+      0% { height: 2px; }
+      100% { height: 16px; }
+    }
+
+    /* ── POLAROID MEMORY LANE ── */
+    #memories {
+      background: var(--sand);
+      padding: 8rem 2rem;
+      overflow: hidden;
+    }
+    .polaroid-gallery {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-top: 4rem;
+    }
+    .polaroid {
+      background: #fff;
+      padding: 12px 12px 40px 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      position: relative;
+      transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+      max-width: 250px;
+      cursor: pointer;
+    }
+    /* Distribute rotations for messy look */
+    .polaroid:nth-child(1) { transform: rotate(-6deg) translateY(20px); }
+    .polaroid:nth-child(2) { transform: rotate(3deg) translateY(0); z-index: 2; }
+    .polaroid:nth-child(3) { transform: rotate(-4deg) translateY(30px); }
+    .polaroid:nth-child(4) { transform: rotate(5deg) translateY(10px); }
+    
+    .polaroid img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      filter: sepia(0.4) contrast(1.1);
+      transition: filter 0.5s ease;
+    }
+    .polaroid-caption {
+      position: absolute;
+      bottom: 15px;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      font-family: 'Caveat', cursive;
+      font-size: 1.5rem;
+      color: #333;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+    .polaroid:hover {
+      transform: scale(1.08) rotate(0deg) !important;
+      z-index: 10;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+    }
+    .polaroid:hover img { filter: sepia(0) contrast(1); }
+    .polaroid:hover .polaroid-caption { opacity: 1; }
+
+    /* ── GOLDEN THREAD HISTORY ── */
+    .history-thread-container {
+      position: absolute;
+      top: 0;
+      left: -40px;
+      width: 2px;
+      height: 100%;
+      background: rgba(184,145,58,0.15);
+    }
+    .golden-thread {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 0%;
+      background: linear-gradient(180deg, transparent, var(--gold-light), var(--gold));
+      box-shadow: 0 0 10px var(--gold-light);
+      transition: height 0.1s linear;
+    }
+    .thread-dot {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%) translateY(50%);
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--cream);
+      box-shadow: 0 0 12px var(--gold);
+    }
+    @media (max-width: 900px) {
+      .history-thread-container { display: none; } /* Hide thread on mobile for cleaner look */
+    }
+
+    /* ── VOICES OF THE PAST ── */
+    .voice-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 1.5rem;
+      padding: 8px 16px;
+      background: rgba(184,145,58,0.1);
+      border: 1px solid var(--gold);
+      border-radius: 30px;
+      color: var(--gold-light);
+      font-family: 'Cinzel', serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .voice-btn:hover {
+      background: var(--gold);
+      color: var(--deep-brown);
+    }
+
+    /* ── LIVING MEMORY WALL ── */
+    #memory-wall {
+      background: var(--deep-brown);
+      padding: 6rem 2rem;
+      position: relative;
+    }
+    .memory-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+    .memory-card {
+      background: rgba(245, 239, 227, 0.03);
+      border: 1px solid rgba(184,145,58,0.15);
+      padding: 2.5rem 2rem;
+      border-radius: 4px;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transition: all 0.4s ease;
+    }
+    .memory-card:hover {
+      background: rgba(245, 239, 227, 0.08);
+      border-color: rgba(184,145,58,0.4);
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.3), 0 0 20px rgba(184,145,58,0.1);
+    }
+    .memory-quote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-style: italic;
+      color: rgba(245,239,227,0.85);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+    .memory-author {
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      color: var(--gold);
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── HERO ── -->
+  <header id="home">
+    
+    <!-- Hero Video Background -->
+    <div class="hero-video-wrapper">
+      <video autoplay loop muted playsinline>
+        <source src="https://cdn.pixabay.com/video/2021/08/04/83864-584742417_large.mp4" type="video/mp4">
+      </video>
+      <div class="hero-video-overlay"></div>
+    </div>
+
+    <div class="header-frame">
+      <div class="corner corner--tl">
+        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2 2 L2 24 M2 2 L24 2" stroke="rgba(184,145,58,0.6)" stroke-width="1"/>
+          <path d="M2 10 L10 2" stroke="rgba(184,145,58,0.3)" stroke-width="0.5"/>
+          <circle cx="2" cy="2" r="2" fill="rgba(184,145,58,0.6)"/>
+        </svg>
+      </div>
+      <div class="corner corner--tr">
+        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2 2 L2 24 M2 2 L24 2" stroke="rgba(184,145,58,0.6)" stroke-width="1"/>
+          <circle cx="2" cy="2" r="2" fill="rgba(184,145,58,0.6)"/>
+        </svg>
+      </div>
+      <div class="corner corner--bl">
+        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2 2 L2 24 M2 2 L24 2" stroke="rgba(184,145,58,0.6)" stroke-width="1"/>
+          <circle cx="2" cy="2" r="2" fill="rgba(184,145,58,0.6)"/>
+        </svg>
+      </div>
+      <div class="corner corner--br">
+        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2 2 L2 24 M2 2 L24 2" stroke="rgba(184,145,58,0.6)" stroke-width="1"/>
+          <circle cx="2" cy="2" r="2" fill="rgba(184,145,58,0.6)"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="header-content">
+      <p class="header-eyebrow">est. Kerala, India</p>
+      <h1 class="header-title">Perayil<br><em>Kudumbam</em></h1>
+      <div class="header-divider">
+        <span></span>
+        <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 0 L9.5 6.5 L16 8 L9.5 9.5 L8 16 L6.5 9.5 L0 8 L6.5 6.5 Z"/>
+        </svg>
+        <span></span>
+      </div>
+      <p class="header-subtitle">A legacy of family, memory &amp; belonging</p>
+      <div class="header-cta">
+        <a href="#explore" class="btn btn-primary">Explore Our Heritage</a>
+        <a href="#history" class="btn btn-outline">Our Story</a>
+      </div>
+    </div>
+
+    <div class="scroll-hint">
+      <span>Scroll</span>
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 5 L12 19 M5 12 L12 19 L19 12" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      </svg>
+    </div>
+  </header>
+
+  <!-- ── NAV ── -->
+  <nav>
+    <div class="nav-inner">
+      <a href="#home" class="nav-logo">Perayil Kudumbam</a>
+      <ul class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#history">History</a></li>
+        <li><a href="FamilyTree.html">Family Tree</a></li>
+        <li><a href="#memories">Photo Album</a></li>
+        <li><a href="FamilyDirectory.html">Directory</a></li>
+        <li><a href="#champakulam">Champakulam</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ── WELCOME ── -->
+  <section id="about">
+    <div class="section-inner">
+      <div class="about-grid">
+        <div class="about-text reveal">
+          <p class="section-label">Welcome</p>
+          <h2 class="section-title">Our Family,<br>Our Heritage</h2>
+          <div class="section-divider"></div>
+          <p>
+            Welcome to the digital home of the Perayil family — a place to honour our roots,
+            celebrate our shared history, and keep the bonds of kinship alive across generations
+            and distances.
+          </p>
+          <p>
+            From the backwaters of Champakulam to every corner of the world, the Perayil family
+            carries with it a rich story woven through time, faith, and love. This site is a
+            living record of who we are and where we come from.
+          </p>
+          <a href="#explore" class="btn btn-primary" style="display:inline-block; margin-top: 1rem;">Discover More →</a>
+        </div>
+        <div class="about-ornament reveal" style="transition-delay:0.2s">
+          <div class="ornament-ring">
+            <div class="ornament-center">
+              <span class="ornament-icon">🌿</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── EXPLORE CARDS ── -->
+  <section id="explore">
+    <div class="section-inner">
+      <div class="reveal">
+        <p class="section-label">Navigate</p>
+        <h2 class="section-title">Explore the<br>Family Archive</h2>
+        <div class="section-divider"></div>
+      </div>
+      <div class="cards-grid">
+
+        <a href="#history" class="card reveal" style="transition-delay:0.05s">
+          <span class="card-icon">📜</span>
+          <h3 class="card-title">Family History</h3>
+          <p class="card-desc">Trace the lineage and story of the Perayil family through the ages — its origins, migrations, and milestones.</p>
+          <span class="card-arrow">Read History →</span>
+        </a>
+
+        <a href="FamilyTree.html" class="card reveal" style="transition-delay:0.1s">
+          <span class="card-icon">🌳</span>
+          <h3 class="card-title">Family Tree</h3>
+          <p class="card-desc">Navigate the branches of our family tree — an interactive record of ancestry, generations, and kinship.</p>
+          <span class="card-arrow">View Tree →</span>
+        </a>
+
+        <a href="#memories" class="card reveal" style="transition-delay:0.15s">
+          <span class="card-icon">📷</span>
+          <h3 class="card-title">Photo Album</h3>
+          <p class="card-desc">Moments frozen in time — weddings, gatherings, festivals, and everyday life across the generations.</p>
+          <span class="card-arrow">View Album →</span>
+        </a>
+
+        <a href="FamilyDirectory.html" class="card reveal" style="transition-delay:0.2s">
+          <span class="card-icon">📋</span>
+          <h3 class="card-title">Family Directory</h3>
+          <p class="card-desc">Find and connect with family members across the world. A living record of the Perayil community today.</p>
+          <span class="card-arrow">View Directory →</span>
+        </a>
+
+        <a href="#champakulam" class="card reveal" style="transition-delay:0.25s">
+          <span class="card-icon">🏘️</span>
+          <h3 class="card-title">Champakulam</h3>
+          <p class="card-desc">Learn about Champakulam — the beloved village on the Kuttanad backwaters that is the heart of our family's roots.</p>
+          <span class="card-arrow">Explore Village →</span>
+        </a>
+
+        <a href="#home" class="card reveal" style="transition-delay:0.3s; background: linear-gradient(135deg, #faf7f2 0%, #f5efe3 100%);">
+          <span class="card-icon">🏠</span>
+          <h3 class="card-title">Home</h3>
+          <p class="card-desc">Return to the beginning — the front page of the Perayil Kudumbam family website.</p>
+          <span class="card-arrow">Go Home →</span>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── POLAROID MEMORIES ── -->
+  <section id="memories">
+    <div class="section-inner">
+      <div class="reveal" style="text-align: center;">
+        <p class="section-label">Moments in Time</p>
+        <h2 class="section-title" style="margin-bottom:1rem;">Nostalgia &amp; Joy</h2>
+        <p style="font-size:1.1rem; color:var(--text-mid); font-style:italic; font-weight: 300;">Hover over the photographs to reveal their stories...</p>
+      </div>
+      
+      <div class="polaroid-gallery">
+        <div class="polaroid reveal" style="transition-delay:0.1s">
+          <img src="church.jpg" alt="St Mary's Basilica church Champakulam">
+          <div class="polaroid-caption" style="font-size: 1.3rem;">St Mary's Basilica church Champakulam</div>
+        </div>
+        <div class="polaroid reveal" style="transition-delay:0.2s">
+          <img src="backwaters.jpg" alt="Kuttanad Backwateres">
+          <div class="polaroid-caption">Kuttanad Backwateres</div>
+        </div>
+        <div class="polaroid reveal" style="transition-delay:0.3s">
+          <img src="festives.jpg" alt="Kuttanafd Festives">
+          <div class="polaroid-caption">Kuttanafd Festives</div>
+        </div>
+        <div class="polaroid reveal" style="transition-delay:0.4s">
+          <img src="kuttanad.jpg" alt="Champakulam">
+          <div class="polaroid-caption">Champakulam</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── HISTORY ── -->
+  <section id="history">
+    <div class="section-inner">
+      <div class="history-content">
+        <div class="history-years reveal">
+          <p class="section-label" style="color: var(--gold-light);">Our Roots</p>
+          <h2 class="section-title" style="color: var(--cream);">Family<br>History</h2>
+          <div class="section-divider" style="background: var(--gold);"></div>
+          <div class="year-display">Est.</div>
+          <blockquote class="history-quote">
+            "A family without roots is like a tree without soil — it cannot stand the storms of time."
+          </blockquote>
+        </div>
+        <div class="history-blocks reveal" style="transition-delay:0.2s; position:relative;">
+          
+          <!-- Golden Thread Animation -->
+          <div class="history-thread-container">
+            <div class="golden-thread" id="goldenThread">
+              <div class="thread-dot"></div>
+            </div>
+          </div>
+          
+          <p>
+            The Perayil family traces its origins to the lush waterways of Kuttanad, Kerala — a land
+            of paddy fields below sea level, of serpent boat races and ancient churches. Generations
+            of our family have called this unique landscape home.
+          </p>
+          <p>
+            Our family name, Perayil, carries within it the memory of a place, a house, and a people
+            who have endured and flourished through centuries of Kerala's remarkable history. From the
+            arrival of Saint Thomas the Apostle to the spice trade era, from colonial times to modern
+            independence — our family has witnessed it all.
+          </p>
+          <p>
+            Today, members of the Perayil family are spread across India and the world, but the
+            pull of the old homeland — its coconut groves, its backwater canals, its church bells on
+            Sunday mornings — remains as strong as ever.
+          </p>
+          
+          <!-- Voices of the Past Audio Demo -->
+          <button class="voice-btn" id="voiceBtn">
+             <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+               <path d="M8 5v14l11-7z"/>
+             </svg>
+             Listen to Appachan's Memory
+          </button>
+          <audio id="voiceAudio" src="https://actions.google.com/sounds/v1/water/waves_crashing_on_rock_beach.ogg" preload="none"></audio>
+          <br>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CHAMPAKULAM ── -->
+  <section id="champakulam">
+    <div class="section-inner">
+      <div class="champakulam-layout">
+        <div class="champakulam-text reveal">
+          <p class="section-label">Our Village</p>
+          <h2 class="section-title">Champakulam</h2>
+          <div class="section-divider"></div>
+          <p>
+            Champakulam is a small island village in the Alappuzha district of Kerala, nestled
+            in the heart of the Kuttanad backwaters. It is known for its ancient churches,
+            its mango-lined waterways, and the famous Champakulam Moolam Boat Race —
+            one of the oldest snake boat races in Kerala.
+          </p>
+          <p>
+            For the Perayil family, Champakulam is more than a location on a map. It is the
+            soil from which we grew, the water that surrounded our childhood homes, and the
+            community that shaped our values of faith, family, and fellowship.
+          </p>
+        </div>
+        <div class="reveal" style="transition-delay:0.2s">
+          <div class="place-card">
+            <p class="place-card-title">About the Village</p>
+            <ul class="place-facts">
+              <li>
+                <span>📍</span>
+                <span>Alappuzha District, Kerala, India</span>
+              </li>
+              <li>
+                <span>🚤</span>
+                <span>Home of the famous Champakulam Moolam Boat Race, one of Kerala's oldest</span>
+              </li>
+              <li>
+                <span>⛪</span>
+                <span>Known for its centuries-old Syrian Christian churches and rich religious heritage</span>
+              </li>
+              <li>
+                <span>🌾</span>
+                <span>Part of Kuttanad — the "Rice Bowl of Kerala," situated below sea level</span>
+              </li>
+              <li>
+                <span>🌿</span>
+                <span>Surrounded by backwater canals, paddy fields and coconut groves</span>
+              </li>
+              <li>
+                <span>🏠</span>
+                <span>The ancestral home of the Perayil Kudumbam for generations</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── LIVING MEMORY WALL ── -->
+  <section id="memory-wall">
+    <div class="section-inner">
+      <div class="reveal" style="text-align: center;">
+        <p class="section-label" style="color: var(--gold-light);">Echoes of Love</p>
+        <h2 class="section-title" style="color: var(--cream);">Living Memory Wall</h2>
+        <div class="section-divider" style="background: var(--gold); margin-left: auto; margin-right: auto;"></div>
+      </div>
+      
+      <div class="memory-grid">
+        <div class="memory-card reveal" style="transition-delay:0.1s">
+          <p class="memory-quote">"They taught us that family isn't just about sharing a name, but sharing a heart. I miss the Sunday lunches in the old house."</p>
+          <p class="memory-author">— Submitted by Joji</p>
+        </div>
+        <div class="memory-card reveal" style="transition-delay:0.2s">
+          <p class="memory-quote">"Every time I trace the backwaters, I feel them walking beside me. The legacy continues in all of us."</p>
+          <p class="memory-author">— Submitted by Alin</p>
+        </div>
+        <div class="memory-card reveal" style="transition-delay:0.3s">
+          <p class="memory-quote">"To the roots that hold us and the branches that lift us. Blessings to our beloved elders."</p>
+          <p class="memory-author">— Submitted by Meena</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <p class="logo">Perayil Kudumbam</p>
+          <p>A family, united by blood and love.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Pages</h4>
+          <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#history">Family History</a></li>
+            <li><a href="FamilyTree.html">Family Tree</a></li>
+            <li><a href="#memories">Photo Album</a></li>
+            <li><a href="FamilyDirectory.html">Family Directory</a></li>
+            <li><a href="#champakulam">Champakulam</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h4>Our Home</h4>
+          <ul>
+            <li><a href="#">Champakulam, Kerala</a></li>
+            <li><a href="#">Alappuzha District</a></li>
+            <li><a href="#">India</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© Perayil Kudumbam · All Rights Reserved</span>
+        <div class="footer-ornament">
+          <span></span>
+          <span style="width:auto; height:auto; background:none; color: rgba(184,145,58,0.4); font-size:0.9rem;">✦</span>
+          <span></span>
+        </div>
+        <span>Made with love, for family</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    reveals.forEach(el => observer.observe(el));
+
+    // Smooth nav highlight
+    const sections = document.querySelectorAll('section[id], header[id]');
+    const navLinks = document.querySelectorAll('.nav-links a');
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(s => {
+        if (window.scrollY >= s.offsetTop - 80) current = s.id;
+      });
+      navLinks.forEach(a => {
+        a.style.color = a.href.includes(current) ? 'rgba(212,168,85,1)' : '';
+      });
+    });
+
+    // ── GOLDEN THREAD ANIMATION ──
+    const historySection = document.getElementById('history');
+    const goldenThread = document.getElementById('goldenThread');
+    
+    window.addEventListener('scroll', () => {
+      if (historySection && goldenThread) {
+        const rect = historySection.getBoundingClientRect();
+        const sectionTop = rect.top;
+        const sectionHeight = rect.height;
+        const windowHeight = window.innerHeight;
+        
+        // Only animate when section is in view
+        if (sectionTop < windowHeight && rect.bottom > 0) {
+          // Calculate progress percentage
+          let progress = ((windowHeight - sectionTop) / sectionHeight) * 100;
+          progress = Math.max(0, Math.min(progress, 100)); // clamp between 0 and 100
+          goldenThread.style.height = progress + '%';
+        }
+      }
+    });
+
+    // ── VOICES OF THE PAST PLAYBACK ──
+    const voiceBtn = document.getElementById('voiceBtn');
+    const voiceAudio = document.getElementById('voiceAudio');
+    if (voiceBtn && voiceAudio) {
+      voiceBtn.addEventListener('click', () => {
+        if (voiceAudio.paused) {
+          voiceAudio.play();
+          voiceBtn.innerHTML = `
+            <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+            Playing...
+          `;
+        } else {
+          voiceAudio.pause();
+          voiceBtn.innerHTML = `
+            <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M8 5v14l11-7z"/></svg>
+            Listen to Appachan's Memory
+          `;
+        }
+        
+        voiceAudio.onended = () => {
+           voiceBtn.innerHTML = `
+            <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M8 5v14l11-7z"/></svg>
+            Listen to Appachan's Memory
+          `;
+        };
+      });
+    }
+
+    // ── GLOBAL BACKGROUND AUDIO (HEARTBEAT) ──
+    const bgAudioBtn = document.getElementById('bgAudioBtn');
+    const bgAudio = document.getElementById('bgAudio');
+    if (bgAudioBtn && bgAudio) {
+      bgAudioBtn.addEventListener('click', () => {
+        if (bgAudio.paused) {
+          bgAudio.play();
+          bgAudioBtn.classList.remove('paused');
+        } else {
+          bgAudio.pause();
+          bgAudioBtn.classList.add('paused');
+        }
+      });
+    }
+  </script>
+
+  <!-- ── FLOATING AUDIO PLAYER ── -->
+  <audio id="bgAudio" loop preload="none">
+    <!-- Placeholder: Sounds of soft backwater rain/river -->
+    <source src="https://actions.google.com/sounds/v1/weather/rain_on_roof.ogg" type="audio/ogg">
+  </audio>
+  <div class="audio-btn paused" id="bgAudioBtn" title="Play Memory Music">
+    <div class="audio-waves">
+      <span></span><span></span><span></span><span></span>
+    </div>
+  </div>
+
+</body>
+</html>
